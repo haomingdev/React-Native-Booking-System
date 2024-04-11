@@ -1,69 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './screens/HomeScreen';
+import UserBooking from './screens/UserBooking';
+import UserProfile from './screens/UserProfile'; 
+import CreateBooking from './screens/CreateBooking';
+import { NavigationContainer } from '@react-navigation/native';
 import { getAuthToken } from './api';
 import { useEffect, useState } from 'react';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import { Double } from 'react-native/Libraries/Types/CodegenTypes';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { screenOptions } from './screens/tabConfigs';
 
-// const user = {
-//   firstname: "haoming",
-//   lastname: "dev",
-// }
+export type RootStackParamList = {
+  Home: undefined; // Add other screens here
+  UserBooking: undefined;
+  UserProfile: undefined;
+  CreateBooking: undefined;
+};
 
-//define User's interface
-interface User {
-  firstname: string;
-  lastname: string;
-}
+const Tab = createBottomTabNavigator<RootStackParamList>();
 
-interface Bookings {
-  firstname: string;
-  lastname: string;
-  totalprice: Double;
-  checkin: string;
-  checkout: string;
-  depositpaid: boolean;
-  additionalneeds: string;
-}
-
-export default function App() {
-  const [authToken, setAuthToken] = useState(null);
-
-  const user: User = {
-    firstname: "haoming",
-    lastname: "dev",
-  }
-
-  useEffect(() => {
-    async function fetchToken() {
-      try {
-        const token = await getAuthToken();
-        setAuthToken(token);
-      } catch(error) {
-        console.error('Error fetching the auth token:', error);
-      }
-    }
-
-    fetchToken();
-  }, []);
-
+const App: React.FC = () => {
   return (
-    <View style={styles.container}>
-      <Text>Hello World! (From Dev)</Text>
-      {/*Show Auth Token. Remove after dev.*/}
-      <Text>Auth Token: {authToken ? authToken : 'No token'}</Text>
-      {/*Show User First Name and Last Name*/}
-      <Text>User: {user.firstname} {user.lastname}</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator screenOptions={screenOptions}>
+        <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarLabel: 'Home' }}/>
+        <Tab.Screen name="UserBooking" component={UserBooking} options={{ tabBarLabel: 'Bookings' }} />
+        <Tab.Screen name="UserProfile" component={UserProfile} options={{ tabBarLabel: 'Profile' }} />
+        <Tab.Screen name="CreateBooking" component={CreateBooking} options={{ tabBarLabel: 'Create Booking' }} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
