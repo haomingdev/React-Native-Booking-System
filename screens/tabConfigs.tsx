@@ -15,6 +15,8 @@ export const screenOptions = ({ route }: BottomTabScreenProps<RootStackParamList
       iconName = focused ? 'newspaper' : 'newspaper-outline';
     } else if (route.name === 'BookingDetails') {
         iconName = focused ? 'list' : 'list-outline';
+    } else if (route.name === 'AllBookings') {
+        iconName = focused ? 'list' : 'list-outline';
     } else {
       iconName = 'circle';
     }

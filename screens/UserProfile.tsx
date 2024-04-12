@@ -26,6 +26,7 @@ const UserProfile: React.FC<UserProfileScreenProps> = ({navigation}) => {
                     value={firstName}
                     placeholder="First Name"
                     editable={false}
+                    multiline= {false}
                 />
                 </View>
 
@@ -37,6 +38,7 @@ const UserProfile: React.FC<UserProfileScreenProps> = ({navigation}) => {
                     value={lastName}
                     placeholder="Last Name"
                     editable={false}
+                    multiline= {false}
                 />
                 </View>
             </View>
@@ -81,13 +83,14 @@ const styles = StyleSheet.create({
     },
     label: {
         marginBottom: 5,
+        fontWeight: 'bold',
     },
     input: {
         borderWidth: 1,
-        borderColor: 'blue', // Adjust border color as needed
+        borderColor: 'blue', 
         borderRadius: 5,
         padding: 10,
-        backgroundColor: '#FFFFFF', // Adjust background color as needed
+        backgroundColor: '#FFFFFF', 
         color: 'black',
     },
 });

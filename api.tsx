@@ -5,7 +5,6 @@ const API_AUTH_URL = 'https://restful-booker.herokuapp.com';
 const API_BOOKINGID_URL = 'https://restful-booker.herokuapp.com/booking';
 
 //for auth api 
-// arrow function: export const getAuthToken = async () => {
 export async function getAuthToken() {
     try {
         const response = await fetch(`${API_AUTH_URL}/auth`, {
@@ -84,13 +83,15 @@ export async function getBookingDetail(id: string) {
             }
         });
         if (!response.ok) {
+            return {};
             throw new Error('Something went wrong with the booking');
         }
         const responseData = await response.json();
         console.log("From getBookingDetail api: ", responseData);
         return responseData;
     } catch (error) {
-        throw error;
         console.error(`Error getting booking detail for bookingID ${id}:`, error);
+        return {};
+        throw error;  
     }
 }

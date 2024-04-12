@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Image } from 'react-native';
-import { UserBookingTabNavigationProp } from './NavigationTypes';
+import { AllBookingsTabNavigationProp } from './NavigationTypes';
 import { getBookingIds, getBookingIdsAll, getBookingDetail } from '../api';
 import {userDefault, BookingId, Bookings} from './Types';
 import { useFocusEffect } from '@react-navigation/native';
 
-type UserBookingScreenProps = {
-    navigation: UserBookingTabNavigationProp;
+type AllBookingsScreenProps = {
+    navigation: AllBookingsTabNavigationProp;
 };
 
-const UserBooking: React.FC<UserBookingScreenProps> = ({navigation}) => {
+const AllBookings: React.FC<AllBookingsScreenProps> = ({navigation}) => {
 
     const [bookingIds, setBookingIds] = useState<BookingId[]>([]);
     const [bookingDetails, setBookingDetails] = useState<Bookings[]>([]);
@@ -27,41 +27,42 @@ const UserBooking: React.FC<UserBookingScreenProps> = ({navigation}) => {
                     <Text numberOfLines={1} ellipsizeMode="tail">Deposit Paid: {item.depositpaid ? 'Yes' : 'No'}</Text>
                     <Text numberOfLines={1} ellipsizeMode="tail">Additional Needs: {item.additionalneeds}</Text>
                 </View>
-                <TouchableOpacity style={styles.detailsButton} onPress={() => navigation.navigate('BookingDetails', { bookingid: item.bookingid })}>
-                    <Text style={styles.detailsButtonText}>View Details</Text>
-                </TouchableOpacity>
             </View>
         );
       };
 
-    const fetchBookingDetails = async (bookingIds: BookingId[]) => {
-        const detailsPromises = bookingIds.map((bookingId) =>
-            getBookingDetail(bookingId.bookingid.toString())
-        );
-        const details = await Promise.all(detailsPromises);
-        const combinedDetails = details.map((detail, index) => ({
-            ...detail,
-            bookingid: bookingIds[index].bookingid
-        }));
-        setBookingDetails(combinedDetails);
-        console.log("Show Combined Detail: ", combinedDetails);
-    };
-
     useFocusEffect(
         useCallback(() => {
+            let isActive = true;
             const fetchBookingIds = async () => {
-                setIsLoading(true);
                 try {
-                    const data = await getBookingIds(userDefault.firstname, userDefault.lastname);
-                    setBookingIds(data);
-                    await fetchBookingDetails(data);
+                    const data = await getBookingIdsAll();
+                    if (isActive) {
+                        setBookingIds(data);
+                        const detailsPromises = data.map((bookingId) =>
+                            getBookingDetail(bookingId.bookingid.toString())
+                        );
+                        const details = await Promise.all(detailsPromises);
+                        const combinedDetails = details.map((detail, index) => ({
+                            ...detail,
+                            bookingid: data[index].bookingid
+                        }));
+                        setBookingDetails(combinedDetails);
+                        console.log("Combined Details: ", combinedDetails)
+                    }
                 } catch (error) {
-                    console.error(`Error fetching booking ids for ${userDefault.firstname}:`, error);
+                    console.error(`Error fetching booking ids: `, error);
                 } finally {
-                    setIsLoading(false);
+                    if (isActive) {
+                        setIsLoading(false);
+                    }
                 }
             };
+    
             fetchBookingIds();
+            return () => {
+                isActive = false;
+            };
         }, [])
     );
 
@@ -145,4 +146,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default UserBooking;
+export default AllBookings;

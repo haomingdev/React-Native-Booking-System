@@ -1,9 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { getAuthToken } from '../api';
 import { useEffect, useState } from 'react';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
-import { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import {User, Bookings} from './Types';
 import {HomeTabNavigationProp } from './NavigationTypes';
 
@@ -12,6 +10,7 @@ type HomeScreenProps = {
 };
 
 const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
+
     const [authToken, setAuthToken] = useState(null);
 
     const user: User = {
@@ -34,17 +33,22 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <Text>Hello Home Screen!</Text>
-            {/*Show Auth Token. Remove after dev.*/}
-            <Text>Auth Token: {authToken ? authToken : 'No token'}</Text>
-            {/*Show User First Name and Last Name*/}
-            <Text>User: {user.firstname} {user.lastname}</Text>
+            <Text style={styles.textlabel}>Welcome to GM Hotel!</Text>
+            <Text style={styles.textlabel}>(Logged in as Sally Brown)</Text>
+            
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('UserProfile')}>
+                <Text style={styles.buttonText}>View Profile</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('UserBooking')}>
+                <Text style={styles.buttonText}>View My Booking</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateBooking')}>
+                <Text style={styles.buttonText}>Create New Booking</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AllBookings')}>
+                <Text style={styles.buttonText}>View All Booking</Text>
+            </TouchableOpacity>
             <StatusBar style="auto" />
-
-            <Button
-            title="Go to User Bookings"
-            onPress={() => navigation.navigate('UserBooking')}
-            />
         </View>
     );
 };
@@ -56,6 +60,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  textlabel: {
+    fontWeight: 'bold',
+    marginBottom: 12,
+  },
+  button: {
+    elevation: 8,
+    backgroundColor: 'navy',
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginBottom: 20,
+    width: '50%',
+  },
+  buttonText: {
+    fontSize: 14,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
+  }
 });
 
 export default HomeScreen;

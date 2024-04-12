@@ -1,4 +1,6 @@
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -6,7 +8,7 @@ export type RootStackParamList = {
   UserProfile: undefined;
   CreateBooking: undefined;
   BookingDetails: { bookingid: number };
-  // Define additional screens and their parameters here as needed
+  AllBookings: undefined;
 };
 
 export type BookingDetailsParams = {
@@ -18,4 +20,6 @@ export type UserBookingTabNavigationProp = BottomTabNavigationProp<RootStackPara
 export type UserProfileTabNavigationProp = BottomTabNavigationProp<RootStackParamList, 'UserProfile'>;
 export type CreateBookingTabNavigationProp = BottomTabNavigationProp<RootStackParamList, 'CreateBooking'>;
 export type BookingDetailsTabNavigationProp = BottomTabNavigationProp<RootStackParamList, 'BookingDetails'>;
+export type AllBookingsTabNavigationProp = BottomTabNavigationProp<RootStackParamList, 'AllBookings'>;
 
+export type BookingDetailsStackNavigationProp = NativeStackNavigationProp<RootStackParamList, 'BookingDetails'>;

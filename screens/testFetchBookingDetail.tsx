@@ -12,7 +12,7 @@ type BookingDetailsScreenProps = {
 };
 
 const BookingDetails: React.FC<BookingDetailsScreenProps> = ({ route, navigation}) => {
-    const { bookingid } = route.params;
+    const bookingid  = 1946;
     const[bookingDetails, setBookingDetails] = useState<Bookings>();
 
     useEffect(() => { 
@@ -29,7 +29,7 @@ const BookingDetails: React.FC<BookingDetailsScreenProps> = ({ route, navigation
     }, [bookingid]);
         
     if (!bookingDetails) {
-        return <Text>Loading...</Text>;  
+        return <Text>Loading...</Text>; 
     }
 
     return (

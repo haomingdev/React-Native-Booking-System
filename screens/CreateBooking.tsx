@@ -5,6 +5,7 @@ import { CreateBookingTabNavigationProp } from './NavigationTypes';
 import moment from 'moment';
 import { Bookings } from './Types';
 import { createBooking } from '../api';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 type CreateBookingScreenProps = {
@@ -76,18 +77,18 @@ const CreateBooking: React.FC<CreateBookingScreenProps> = ({navigation}) => {
       <Image source={require('../assets/premier_2_bedroom.jpg')} style={styles.image} />
       <Text style={styles.title}>Waterfront Premier 2-Bedroom Suite (River View)</Text>
       <View style={styles.inputContainer}>
-        <Text>First Name:</Text>
-        <TextInput value={firstName} onChangeText={setFirstName} style={styles.input} />
+        <Text style={styles.label}>First Name:</Text>
+        <TextInput value={firstName} onChangeText={setFirstName} style={styles.input} multiline= {false} />
       </View>
       <View style={styles.inputContainer}>
-        <Text>Last Name:</Text>
-        <TextInput value={lastName} onChangeText={setLastName} style={styles.input} />
+        <Text style={styles.label}>Last Name:</Text>
+        <TextInput value={lastName} onChangeText={setLastName} style={styles.input} multiline= {false} />
       </View>
       <View style={styles.inputContainer}>
-        <TouchableOpacity style={styles.button} onPress={showCheckInPicker}>
-            <Text style={styles.buttonText}>Select Check-In Date</Text>
+        <Text style={styles.label}>Check In Date: {moment(checkInDate).format('DD MMMM YYYY')}</Text>
+        <TouchableOpacity style={styles.buttonDatePicker} onPress={showCheckInPicker}>
+            <Text style={styles.buttonText}><Ionicons name="calendar" size={16} color="#fff" />   {("Select Check-In Date" )}</Text>
         </TouchableOpacity>
-        <Text>Check In Date: {moment(checkInDate).format('DD MMMM YYYY')}</Text>
         {checkInPickerShow && ( 
             <DateTimePicker
                 style={styles.dateTimePicker}
@@ -97,17 +98,16 @@ const CreateBooking: React.FC<CreateBookingScreenProps> = ({navigation}) => {
                 onChange={(event, selectedDate) => {
                     setCheckInPickerShow(false);
                     const currentDate = selectedDate || checkInDate;
-                    //setCheckInDate(currentDate);
                     setCheckInDate(moment(currentDate).startOf('day').toDate());
                 }}
             />
         )}
       </View>
       <View style={styles.inputContainer}>
-        <TouchableOpacity style={styles.button} onPress={showCheckOutPicker}>
-            <Text style={styles.buttonText}>Select Check-Out Date</Text>
+        <Text style={styles.label}>Check Out Date: {moment(checkOutDate).format('DD MMMM YYYY')}</Text>
+        <TouchableOpacity style={styles.buttonDatePicker} onPress={showCheckOutPicker}>
+            <Text style={styles.buttonText}><Ionicons name="calendar" size={16} color="#fff" />   {("Select Check-Out Date" )}</Text>
         </TouchableOpacity>
-        <Text>Check Out Date: {moment(checkOutDate).format('DD MMMM YYYY')}</Text>
         {checkOutPickerShow && ( 
             <DateTimePicker
             style={styles.dateTimePicker}
@@ -117,17 +117,16 @@ const CreateBooking: React.FC<CreateBookingScreenProps> = ({navigation}) => {
             onChange={(event, selectedDate) => {
                 setCheckOutPickerShow(false);
                 const currentDate = selectedDate || checkOutDate;
-                //setCheckOutDate(currentDate);
                 setCheckOutDate(moment(currentDate).startOf('day').toDate());
             }}
             />
         )}
       </View>
       <View style={styles.inputContainer}>
-        <Text>Price per Night: RM 400.00</Text>
-        <Text>Total Price: RM {totalPrice.toFixed(2)}</Text>
-        <Text>Additional Needs: </Text>
-        <TextInput value={additionalNeeds} onChangeText={setAdditionalNeeds} style={styles.textInput}></TextInput>
+        <Text style={styles.label}>Price per Night: RM 400.00</Text>
+        <Text style={styles.label}>Total Price: RM {totalPrice.toFixed(2)}</Text>
+        <Text style={styles.label}>Additional Needs: </Text>
+        <TextInput value={additionalNeeds} onChangeText={setAdditionalNeeds} style={styles.textInput} multiline= {true}></TextInput>
       </View>
       <TouchableOpacity style={styles.button} onPress={handleBooking}>
             <Text style={styles.buttonText}>Book Now</Text>
@@ -143,7 +142,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 250, // Adjust height to your requirement
+    height: 250, 
   },
   title: {
     fontWeight: 'bold',
@@ -152,6 +151,10 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: 15,
+  },
+  label: {
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
   input: {
     borderWidth: 1,
@@ -169,9 +172,19 @@ const styles = StyleSheet.create({
     padding: 10,
     color: 'black',
   },
+  buttonDatePicker: {
+    elevation: 8,
+    backgroundColor: 'navy',
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginBottom: 0,
+    width: '80%',
+    left: '10%',
+  },
   button: {
     elevation: 8,
-    backgroundColor: "#808000",
+    backgroundColor: 'navy',
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 12,
