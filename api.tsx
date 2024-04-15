@@ -120,3 +120,31 @@ export async function getDeleteBooking(id: string) {
         throw error;
     }
 }
+
+// update booking, according to bookingID parameter accepted
+export async function putUpdateBooking(id: string, bookingDetails: Bookings) {
+    try {       
+        console.log(`Received id: ${id}`)
+        const token = await getAuthToken();
+        console.log(`Token is: ${token}`)
+        const response = await fetch(`${API_BOOKINGID_URL}/${encodeURIComponent(id)}`, {
+            method: 'PUT', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Cookie': `token=${token}`,
+            }, 
+            body: JSON.stringify(bookingDetails),
+        });
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Failed to update booking: ${errorText || response.statusText}`);
+        }
+        const responseData = await response.json();
+        console.log("From putUpdateBooking api: Update operation was successful: ", responseData);
+        return responseData; 
+    } catch (error) {
+        console.error(`Error updating booking for bookingID ${id}:`, error);
+        throw error;
+    }
+}

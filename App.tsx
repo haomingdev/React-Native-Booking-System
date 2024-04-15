@@ -7,6 +7,7 @@ import UserProfile from './screens/UserProfile';
 import CreateBooking from './screens/CreateBooking';
 import BookingDetails from './screens/BookingDetails';
 import AllBookings from './screens/AllBookings';
+import UpdateBooking from './screens/UpdateBooking';
 import { NavigationContainer } from '@react-navigation/native';
 import { getAuthToken } from './api';
 import { useEffect, useState } from 'react';
@@ -22,6 +23,7 @@ export type RootStackParamList = {
   CreateBooking: undefined;
   BookingDetails: { bookingid: number };
   AllBookings: undefined;
+  UpdateBooking: { bookingid: number };
 };
 
 const BookingStack = createNativeStackNavigator<RootStackParamList>();
@@ -31,6 +33,7 @@ function BookingStackNavigator() {
     <BookingStack.Navigator screenOptions={{ headerShown: false }}>
       <BookingStack.Screen name="UserBooking" component={UserBooking} />
       <BookingStack.Screen name="BookingDetails" component={BookingDetails} />
+      <BookingStack.Screen name='UpdateBooking' component={UpdateBooking} />
     </BookingStack.Navigator>
   );
 }

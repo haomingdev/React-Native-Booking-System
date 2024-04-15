@@ -25,9 +25,7 @@ const CreateBooking: React.FC<CreateBookingScreenProps> = ({navigation}) => {
   const [totalNight, setTotalNight] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0.00);
 
-  // Add the logic to handle booking submission
   const handleBooking = async () => {
-    // Implement booking logic
     const newBooking: Bookings = {
         firstname: "Sally",
         lastname: "Brown",

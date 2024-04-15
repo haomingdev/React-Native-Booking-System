@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Image, View, Text, StyleSheet, Button, ScrollView, TextInput } from 'react-native';
-import { BookingDetailsTabNavigationProp, BookingDetailsStackNavigationProp, RootStackParamList  } from './NavigationTypes';
+import { Image, View, Text, StyleSheet, Button, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { BookingDetailsStackNavigationProp, RootStackParamList  } from './NavigationTypes';
 import { getBookingDetail } from '../api';
 import { RouteProp } from '@react-navigation/native'
 import { Bookings } from './Types';
 import moment from 'moment';
+import { Ionicons } from '@expo/vector-icons';
 
 type BookingDetailsScreenProps = {
     navigation: BookingDetailsStackNavigationProp;
@@ -68,7 +69,12 @@ const BookingDetails: React.FC<BookingDetailsScreenProps> = ({ route, navigation
                 editable={false} 
                 />
             </View>
-            <Button title="Go Back" onPress={() => navigation.goBack()} />
+            <TouchableOpacity style={styles.updateButton} onPress={() => navigation.navigate('UpdateBooking', { bookingid: bookingid })}>
+                <Ionicons name="create-outline" size={16} color={'white'}><Text style={styles.buttonText}>   Update</Text></Ionicons>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+            <Ionicons name="arrow-back-outline" size={16} color={'white'}><Text style={styles.buttonText}>   Back</Text></Ionicons>
+            </TouchableOpacity>
         </ScrollView>
     );
 };
@@ -130,7 +136,40 @@ const styles = StyleSheet.create({
     backButtonText: {
         color: '#fff',
         textAlign: 'center',
-    }
+    }, 
+    updateButton: {
+        elevation: 8,
+        backgroundColor: 'navy',
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        marginBottom: 5,
+        alignSelf: 'flex-start',
+        width: '33%',
+        left: '12%',
+        bottom: '0%',
+        zIndex: 1,
+    },
+    button: {
+        flexDirection: 'row',
+        elevation: 8,
+        backgroundColor: 'navy',
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        marginBottom: 5,
+        width: '33%',
+        alignSelf: 'flex-end',
+        right: '5%',
+        bottom: '12%',
+      },
+      buttonText: {
+        fontSize: 14,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+        textTransform: "uppercase"
+      }
   });
 
 export default BookingDetails;
