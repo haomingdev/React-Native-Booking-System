@@ -95,3 +95,28 @@ export async function getBookingDetail(id: string) {
         throw error;  
     }
 }
+
+// delete booking according to bookingID parameter accepted
+export async function getDeleteBooking(id: string) {
+    try {       
+        console.log(`Received id: ${id}`)
+        const token = await getAuthToken();
+        console.log(`Token is: ${token}`)
+        const response = await fetch(`${API_BOOKINGID_URL}/${encodeURIComponent(id)}`, {
+            method: 'DELETE', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': `token=${token}`,
+            }
+        });
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Failed to delete booking: ${errorText || response.statusText}`);
+        }
+        console.log("From getDeleteBooking api: Delete operation was successful");
+        return; 
+    } catch (error) {
+        console.error(`Error deleting booking for bookingID ${id}:`, error);
+        throw error;
+    }
+}

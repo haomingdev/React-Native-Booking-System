@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Image, Alert } from 'react-native';
 import { UserBookingTabNavigationProp } from './NavigationTypes';
-import { getBookingIds, getBookingIdsAll, getBookingDetail } from '../api';
+import { getBookingIds, getBookingIdsAll, getBookingDetail, getDeleteBooking } from '../api';
 import {userDefault, BookingId, Bookings} from './Types';
 import { useFocusEffect } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 type UserBookingScreenProps = {
     navigation: UserBookingTabNavigationProp;
@@ -14,6 +15,7 @@ const UserBooking: React.FC<UserBookingScreenProps> = ({navigation}) => {
     const [bookingIds, setBookingIds] = useState<BookingId[]>([]);
     const [bookingDetails, setBookingDetails] = useState<Bookings[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [deleteData, setDeleteData] = useState("Empty");
 
     const renderBookingItem = ({ item }: { item: Bookings }) => {
         return (
@@ -27,12 +29,51 @@ const UserBooking: React.FC<UserBookingScreenProps> = ({navigation}) => {
                     <Text numberOfLines={1} ellipsizeMode="tail">Deposit Paid: {item.depositpaid ? 'Yes' : 'No'}</Text>
                     <Text numberOfLines={1} ellipsizeMode="tail">Additional Needs: {item.additionalneeds}</Text>
                 </View>
+                <TouchableOpacity style={styles.deleteButton} onPress={() => deleteBookingConfirmation(item.bookingid) }>
+                    <Ionicons name="trash-outline" size={16} color={'white'}></Ionicons>
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.detailsButton} onPress={() => navigation.navigate('BookingDetails', { bookingid: item.bookingid })}>
                     <Text style={styles.detailsButtonText}>View Details</Text>
                 </TouchableOpacity>
             </View>
         );
       };
+
+    const deleteBookingConfirmation = (bookingId?: number) => {
+        Alert.alert("Delete Confirmation", `Are you sure to delete this booking?`, [
+            {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+              },
+            { 
+                text: "OK", 
+                onPress: () => { if(bookingId) {
+                    deleteBooking(bookingId);
+                } 
+            }}
+        ],
+        {cancelable: false}    
+        );
+    }
+
+    const deleteBooking = async (bookingId?: number) => {
+        try {
+            await getDeleteBooking(bookingId!.toString());
+            console.log(`BookingID ${bookingId} is deleted successfully`);
+            Alert.alert("Delete Successful", `Booking ${bookingId} has been deleted successfully!`, [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]);
+            // Refresh the bookings list
+            const updatedBookingDetails = bookingDetails.filter(booking => booking.bookingid !== bookingId);
+            setBookingDetails(updatedBookingDetails);
+        } catch(error) {
+            console.error(`Error deleting booking for bookingID ${bookingId}:`, error);
+            Alert.alert("Delete Error", `Unable to delete booking ${bookingId}. Please try again.`, [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]);
+        }
+    };
 
     const fetchBookingDetails = async (bookingIds: BookingId[]) => {
         const detailsPromises = bookingIds.map((bookingId) =>
@@ -135,6 +176,16 @@ const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
         fontWeight: 'bold',
+    },
+    deleteButton: {
+        backgroundColor: 'navy',
+        padding: 10,
+        borderRadius: 5,
+        marginTop: 10,
+        position: 'absolute',
+        alignSelf: 'flex-end',
+        left: '57%',
+        bottom: '7%',
     },
     image: {
         width: 125,
