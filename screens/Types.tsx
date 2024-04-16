@@ -29,4 +29,10 @@ export interface Bookings {
   bookingid?: number;
 }
 
+export interface Filters {
+  minprice: number;
+  maxprice: number;
+  depositpaid: boolean;
+};
+
   

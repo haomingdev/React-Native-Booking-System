@@ -25,14 +25,18 @@ const CreateBooking: React.FC<CreateBookingScreenProps> = ({navigation}) => {
   const [totalNight, setTotalNight] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0.00);
 
+  const today = new Date(); 
+  const tomorrow = new Date(today); 
+  tomorrow.setDate(tomorrow.getDate() + 1); 
+
   const handleBooking = async () => {
     const newBooking: Bookings = {
         firstname: "Sally",
         lastname: "Brown",
         totalprice: totalPrice,
         bookingdates: {
-            checkin: moment(checkInDate).format('DD MMMM YYYY'),
-            checkout: moment(checkOutDate).format('DD MMMM YYYY')
+            checkin: moment(checkInDate, 'DD MMMM YYYY').format('YYYY-MM-DD'),
+            checkout: moment(checkOutDate, 'DD MMMM YYYY').format('YYYY-MM-DD')
         },
         depositpaid: false,
         additionalneeds: additionalNeeds,
@@ -90,6 +94,7 @@ const CreateBooking: React.FC<CreateBookingScreenProps> = ({navigation}) => {
         {checkInPickerShow && ( 
             <DateTimePicker
                 style={styles.dateTimePicker}
+                minimumDate={new Date()}
                 value={checkInDate}
                 display="default"
                 mode="date"
@@ -109,6 +114,7 @@ const CreateBooking: React.FC<CreateBookingScreenProps> = ({navigation}) => {
         {checkOutPickerShow && ( 
             <DateTimePicker
             style={styles.dateTimePicker}
+            minimumDate={tomorrow}
             value={checkOutDate}
             display="default"
             mode="date"

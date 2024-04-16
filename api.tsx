@@ -37,6 +37,19 @@ export async function getBookingIds(firstName: string, lastName:string) {
     }
 }
 
+//get booking id, filter by user's name
+export async function getBookingIdsDate(firstName: string, lastName:string, dateQuery:string) {
+    try {
+        const response = await fetch(`${API_BOOKINGID_URL}?firstname=${encodeURIComponent(firstName)}&lastname=${encodeURIComponent(lastName)}${dateQuery}`, {
+            method: 'GET',
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(`Error fetching Booking ID (date filter) for ${firstName}:`, error);
+    }
+}
+
 //get all booking id
 export async function getBookingIdsAll() {
     try {
@@ -47,6 +60,19 @@ export async function getBookingIdsAll() {
         return data;
     } catch (error) {
         console.error('Error fetching Booking ID:', error);
+    }
+}
+
+//get booking id, filter by user's name
+export async function getBookingIdsAllDate(dateQuery:string) {
+    try {
+        const response = await fetch(`${API_BOOKINGID_URL}?${dateQuery}`, {
+            method: 'GET',
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(`Error fetching Booking ID (date filter):`, error);
     }
 }
 
