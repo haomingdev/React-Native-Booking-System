@@ -5,10 +5,10 @@
 2. Description
 
     This project is coded in typescript and javascript. 
-    The requirements for this project can be categorized into Basic, API, and Bonus requirements. For now, the *Basic* and *API* requirements were completed. 
+    The requirements for this project can be categorized into Basic, API, and Bonus requirements.
     The requirements for *Basic*, *API*, and *Bonus* are as follows:
 
-        2.1 *Basic Requirements:* (Completed as of this version)
+        2.1 *Basic Requirements:* 
         i. User Booking Page
             - The user should see bookings under their name organized in a list
             - The bookings should be represented by a card component
@@ -27,7 +27,7 @@
         2.2 *API:* (Completed as of this version)
         i.  Implemented REST CRUD api from: https://restfulbooker.herokuapp.com/apidoc/ in CRUD processes of the application.
 
-        2.3 *Bonus Requirements:* (To be completed in future version)
+        2.3 *Bonus Requirements:* 
         i. User booking page
             - Sort and filtering
                 a. User can sort by price
@@ -75,4 +75,5 @@
 
     i. The application was not styled using Tailwind Framework.
     ii. Lack of testing documentation
+    iii. Bonus Feature for All Bookings page is not implemented.
     
