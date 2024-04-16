@@ -1,4 +1,4 @@
-1. Bookie Hotel Booking System 
+1. Bookie Hotel Booking System (v2.0.0)
 
     This is a React Native Project called "Bookie Hotel Booking System". This project is done in completion of a technical test from AMBtech. 
 
